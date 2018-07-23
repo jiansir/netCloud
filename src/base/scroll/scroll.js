@@ -45,13 +45,17 @@ class Scroll extends React.Component {
     
   }
   render(){
+    const {className=""}=this.props;
     return (
-      <div className="scroll-wrapper" ref="scrollWrapper">
+      <div className={`scroll-wrapper ${className}`} ref="scrollWrapper">
         <div>
           {this.props.children}
         </div>
       </div>
     )
   }
+}
+Scroll.propTypes-{
+  className:PropTypes.string
 }
 export default Scroll

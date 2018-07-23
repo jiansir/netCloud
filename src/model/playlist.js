@@ -33,5 +33,6 @@ export const createPlayListDetail =function(playlist){
     playCount: playlist.playCount,
     shareCount: playlist.shareCount,
     commentCount: playlist.commentCount,
+    tracks
   })
 }

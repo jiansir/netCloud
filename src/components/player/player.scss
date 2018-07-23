@@ -1,0 +1,249 @@
+@import "~assets/css/mixin.scss";
+@import "~assets/css/var.scss";
+
+input[type=range] {
+    -webkit-appearance: none;
+    border-radius: 10px; /*这个属性设置使填充进度条时的图形为圆角*/
+}
+// input[type=range]::-webkit-slider-runnable-track {
+//     height: 10px;
+//     border-radius: 10px; /*将轨道设为圆角的*/
+//     // box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; /*轨道内置阴影效果*/
+// }
+/*拖动块的样式*/
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;/*清除系统默认样式*/
+  height: 45px;/*拖动块高度*/
+  width: 45px;/*拖动块宽度*/
+  background: #fff;/*拖动块背景*/
+  border-radius: 50%; /*外观设置为圆形*/
+  border: solid 1px #ddd; /*设置边框*/
+}
+.player{
+  & .player-full {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    display: none;
+    background: #000;
+    &.player-full-enter {
+      transform: translate3d(0, 50%, 0);
+      opacity: 0;
+    }
+    &.player-full-enter-active {
+      opacity: 1;
+      transition: all .15s ease-out;
+      transform: translate3d(0,0,0)
+    }
+    &.player-full-exit{
+      transform:translate3d(0,0,0);
+      opacity:1;
+    }
+    &.player-full-exit-active{
+      transition:all .15s ease-out;
+      transform: translate3d(0,50%,0);
+      opacity: 0;
+    }
+    .player-bg{
+      width: 100%;
+      height: 100%;
+      filter: blur(30Px);
+      transform: scale(1.5);
+      @include bg-full;
+      &:after {
+        content: " ";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background-color: rgba(0, 0, 0, .25);
+      }
+    }
+    .header {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1;
+      height: 120px;
+      padding: 20px 170px;
+      border-bottom: 1px solid rgba(255, 255, 255, .15);
+      .header-back {
+        position: absolute;
+        top: 44px;
+        left: 44px;
+        display: block;
+        width: 72px;
+        height: 72px;
+        @include bg-url("~assets/img/oq.png");
+        @include bg-full;
+      }
+      h1 {
+        height: 60px;
+        line-height: 70px;
+        font-size: 46px;
+        color: #fff;
+        @include no-wrap;
+      }
+      h2 {
+        height: 60px;
+        line-height: 60px;
+        font-size: 36px;
+        color: rgba(255, 255, 255, .4);
+        @include no-wrap;
+      }
+    }
+    .middle {
+      position: absolute;
+      top: 160px;
+      right: 0;
+      left: 0;
+      bottom: 360px;
+    }
+    .footer {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 20px;
+      height: 320px;
+      .progress-wrapper {
+        display: flex;
+        height: 20Px;
+        padding: 8px 50px 0;
+        .progress-time {
+          width: 120px;
+          line-height: 20Px;
+          font-size: $font-size-small-ss;
+          color: #fff;
+          &.progress-time-l {
+            text-align: left;
+          }
+          &.progress-time-r {
+            text-align: right;
+          }
+        }
+        .progress-main{
+          position: relative;
+          width:100%;
+          height:2Px;
+          padding: 9Px 0;
+          .progress-range{
+            position: absolute;
+            top:50%;
+            left:0;
+            width:100%;
+            height:2Px;
+            transform: translateY(-50%);
+            background: -webkit-linear-gradient($theme-color,$theme-color) no-repeat, #ddd;/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+            // background-size: attr(data-precent)% 100%;/*设置左右宽度比例*/
+          }
+        }
+      }
+      .btn-wrapper {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 252px;
+        .btn {
+          @include bg-full;
+          &.btn-mode {
+            width: 162px;
+            height: 162px;
+            margin-right: 30px;
+            &.mode-list {
+              @include bg-url("~assets/img/player/mode-list.png");
+            }
+            &.mode-random {
+              @include bg-url("~assets/img/player/mode-random.png");
+            }
+            &.mode-single {
+              @include bg-url("~assets/img/player/mode-single.png");
+            }
+          }
+          &.btn-prev {
+            width: 214px;
+            height: 214px;
+            @include bg-url("~assets/img/player/prev.png");
+          }
+          &.btn-play {
+            width: 252px;
+            height: 252px;
+            @include bg-url("~assets/img/player/play.png");
+            &.btn-pause {
+              @include bg-url("~assets/img/player/pause.png");
+            }
+          }
+          &.btn-next {
+            width: 214px;
+            height: 214px;
+            @include bg-url("~assets/img/player/next.png");
+          }
+          &.btn-list {
+            width: 162px;
+            height: 162px;
+            margin-left: 30px;
+            @include bg-url("~assets/img/player/list.png");
+          }
+        }
+      }
+    }
+  }
+  & .player-min{
+    position: fixed;
+    bottom:0;
+    left:0;
+    width: 100%;
+    display:flex;
+    align-items: center;
+    padding:20px;
+    box-sizing: border-box;
+    background:#FFF;
+    &-img {
+      width: 110px;
+      height: 110px;
+      margin-right: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    &-info{
+      min-width:0;
+      flex:1;
+      font-size:$font-size-small;
+      color:#888;
+      h2,p{
+        @include no-wrap;
+      }
+      h2 {
+        height: 60px;
+        line-height: 60px;
+        font-size: $font-size-medium-x;
+        color: #333;
+      }
+      p {
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+    &-play {
+      width: 90px;
+      height: 90px;
+      margin-right: 50px;
+      @include bg-full;
+      @include bg-url("~assets/img/player/min-play.png");
+      &.pause {
+        @include bg-url("~assets/img/player/min-pause.png");
+      }
+    }
+    &-list {
+      width: 90px;
+      height: 90px;
+      @include bg-full;
+      @include bg-url("~assets/img/player/min-list.png");
+    }
+  }
+}

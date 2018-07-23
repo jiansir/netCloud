@@ -4,7 +4,8 @@ import request from '../common/request';
 import { 
   getBannerApi, 
   getPersonalizedApi, 
-  getPlaylistDetailApi
+  getPlaylistDetailApi,
+  loginApi
 } from '../api';
 
 export function getBanner(data,dispatch){
@@ -16,7 +17,7 @@ export function getBanner(data,dispatch){
     if (res.status==200){
       return dispatch({
         type: ActionTypes.GET_BANNER,
-        payload:{data:res.data,code:res.code}
+        payload:{data:res.data,code:res.data.code}
       })
     }
     dispatch({
@@ -41,5 +42,53 @@ export function getPlaylistDetail(id){
     params:{
       id
     }
+  })
+}
+export function setShowPlayer(showPlayer){
+  return { type: ActionTypes.SET_SHOW_PLAYER,payload:showPlayer}
+}
+export function setMusicList(playList){
+  return { type: ActionTypes.SET_MUSIC_LIST, payload: playList}
+}
+export function setCurrentMusic(music) {
+  return { type: ActionTypes.SET_CURRENT_MUSIC, payload: music }
+}
+export function setCurrentIndex(index) {
+  return { type: ActionTypes.SET_CURRENT_INDEX, payload: index }
+}
+export const setMusicAll=({playlist,currentIndex})=>dispatch=>{
+  dispatch(setShowPlayer(true))
+  dispatch(setMusicList(playlist));
+  dispatch(setCurrentIndex(currentIndex));
+  dispatch(setCurrentMusic(playlist[currentIndex]))
+}
+export const login = (data,dispatch)=>{
+  console.log(data);
+  request({
+    url: loginApi,
+    data
+  }).then((res)=>{
+    console.log(res);
+    if (res.status == 200) {
+      if(res.data.code==200){
+        return dispatch({
+          type: ActionTypes.LOGIN,
+          payload: {data : res.data, code: res.data.code }
+        })
+      }
+      return dispatch({
+        type: ActionTypes.LOGIN,
+        payload: { code: res.data.code,data:res.data.msg }
+      })
+    }
+    dispatch({
+      type: ActionTypes.LOGIN,
+      payload: { code: res.data.code,data:'请求失败' }
+    })
+  },(error)=>{
+    dispatch({
+      type:ActionTypes.LOGIN,
+      payload:{code:-1,data:'请求异常'}
+    })
   })
 }

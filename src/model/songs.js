@@ -1,12 +1,12 @@
 
 export class Song{
-  constructor(params) {
-    this.id = params.id; //歌曲ID
-    this.name = params.name; //歌曲名称
-    this.singer = params.singer; //歌手
-    this.album = params.album; //专辑
-    this.image = params.image; //封面图
-    this.duration = params.duration; //时长
+  constructor({ id, name, singer, album, image, duration }) {
+    this.id = id; //歌曲ID
+    this.name = name; //歌曲名称
+    this.singer = singer; //歌手
+    this.album = album; //专辑
+    this.image = image; //封面图
+    this.duration = duration; //时长
   }
 }
 function filterSinger(singers){
@@ -35,5 +35,6 @@ const formatSongs=function(list){
       Songs.push(createSongs(item))
     }
   });
+  return Songs
 }
 export default formatSongs

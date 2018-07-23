@@ -1,1 +1,6 @@
 export const GET_BANNER ='GET_BANNER';
+export const SET_MUSIC_LIST ='SET_MUSIC_LIST';
+export const SET_CURRENT_MUSIC ='SET_CURRENT_MUSIC';
+export const SET_CURRENT_INDEX ='SET_CURRENT_INDEX';
+export const SET_SHOW_PLAYER ='SET_SHOW_PLAYER';
+export const LOGIN='LOGIN';

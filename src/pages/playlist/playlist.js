@@ -5,6 +5,9 @@ import {getPlaylistDetail} from 'store/actions';
 import { createPlayListDetail} from 'model/playlist';
 import MmNav from 'components/mm-nav/mm-nav';
 import Loading from 'base/loading/loading';
+import CommonSongList from 'base/songlist/songlist';
+import { setMusicAll} from 'store/actions';
+
 import './playlist.scss';
 
 class PlayList extends React.Component{
@@ -20,13 +23,18 @@ class PlayList extends React.Component{
   componentDidMount() {
     var playListId=this.props.match.params.id;
     getPlaylistDetail(playListId).then(res=>{
-      console.log(res);
       if(res.data.code==200){
         this.setState({
           playListData:createPlayListDetail(res.data.result),
           loading:false
         })
       }
+    })
+  }
+  onItemClick=(id,index)=>{
+    this.props.onSetMusicAll({
+      playlist:this.state.playListData.tracks,
+      currentIndex:index
     })
   }
   
@@ -47,33 +55,47 @@ class PlayList extends React.Component{
         }
         {
           loading ? <Loading />:
-          <header className="playlist-header">
-            <div className="mm-blur">
-              <div
-                className="mm-blur-bg"
-                style={{ backgroundImage: `url(${coverImgUrl}?param=100y100)` }}
-              />
-            </div>
-            <div className="playlist-header-wrapper">
-              <div className="playlist-header-hd" data-play={(playCount)}>
-                <img src={`${coverImgUrl}?param=100y100`} alt="" />
-              </div>
-              <div className="playlist-header-bd">
-                <h1>{name}</h1>
-                <div className="playlist-header-user">
-                  <img src={`${avatarUrl}?param=50y50`} alt="" />
-                  <span>{nickname}</span>
+            <Scroll className="mm-content">
+              <header className="playlist-header">
+                <div className="mm-blur">
+                  <div
+                    className="mm-blur-bg"
+                    style={{ backgroundImage: `url(${coverImgUrl}?param=100y100)` }}
+                  />
                 </div>
-              </div>
-            </div>
-          </header>
+                <div className="playlist-header-wrapper">
+                  <div className="playlist-header-hd" data-play={playCount}>
+                    <img src={`${coverImgUrl}?param=100y100`} alt="" />
+                  </div>
+                  <div className="playlist-header-bd">
+                    <h1>{name}</h1>
+                    <div className="playlist-header-user">
+                      <img src={`${avatarUrl}?param=50y50`} alt="" />
+                      <span>{nickname}</span>
+                    </div>
+                  </div>
+                </div>
+              </header>
+              {
+                tracks &&
+                <CommonSongList list={tracks} onItemClick={this.onItemClick}/>
+              }
+            </Scroll>
         }
-        
       </div>
     )
   }  
 }
 const mapStateToProps=state=>({
-  
+  currentMusic: state.currentMusic
 })
-export default PlayList
+
+const mapDispatchToProps=dispatch=>{
+  return {
+    onSetMusicAll: status => {
+      dispatch(setMusicAll(status))
+    }
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(PlayList)
