@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import './cd.scss';
 
 const Cd=(props)=>{
-  const {isPlay,image}=props;
+  const { isPlay, image, onToggle}=props;
   return (
-    <div className={`player-cd ${isPlay?'':'pause'}`}>
+    <div className={`player-cd ${isPlay ? '' : 'pause'}`} onClick={onToggle}>
       <div className="needle"></div>
       <div className="cd-box">
         <div className="cd-wrap"></div>
@@ -16,6 +16,7 @@ const Cd=(props)=>{
 }
 Cd.propTypes={
   isPlay:PropTypes.bool.isRequired,
-  image:PropTypes.string.isRequired
+  image:PropTypes.string.isRequired,
+  onToggle:PropTypes.func
 }
 export default Cd

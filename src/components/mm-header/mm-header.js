@@ -5,7 +5,6 @@ import './mm-header.scss';
 const Mheader=(props)=>{
   const showHeader = /music|home|video/.test(props.location.pathname);
   const openLeft=()=>{
-    console.log(3333);
     props.onShowLeft(true)
   }
   return (

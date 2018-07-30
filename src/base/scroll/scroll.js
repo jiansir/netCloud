@@ -40,7 +40,6 @@ class Scroll extends React.Component {
     if(!this.scroll){
       let options = Object.assign({}, DEFAULT_OPTIONS, this.props.options);
       this.scroll = new BScroll(this.scrollWrapper, options);
-      console.log(this.scroll);
     }
     
   }

@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import classNames from 'classname';
 import './songlist.scss';
 
 const CommonSongList=(props)=>{
   const {list,onItemClick}=props;
+  const tipfun=()=>{
+    // console.log('没版权')
+  }
   return (
     <div className="song-wrapper">
       {
         list.length>0&&list.map((item,index)=>(
-          <div className="song-item" onClick={()=>onItemClick(item.id,index)} key={item.id}>
+          <div className={classNames("song-item",{nocopy:item.copyright==0})} onClick={() => onItemClick(item.id, index)} key={item.id}>
             <div className="song-num">{index + 1}</div>
             <div className="song-info">
               <h2>{item.name}</h2>

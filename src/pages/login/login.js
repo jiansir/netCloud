@@ -41,7 +41,6 @@ class Login extends React.Component{
     })
   }
   componentWillReceiveProps(nextprops){
-    console.log(nextprops);
     if (nextprops.loginStatus){
       this.props.history.push('/home');
     }
@@ -64,7 +63,6 @@ class Login extends React.Component{
   }
 }
 const mapStateToProps = state => {
-  console.log(state);
   return {
     loginStatus: state.loginReducer.loginStatus,
     loginMsg:state.loginReducer.loginMsg

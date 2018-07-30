@@ -1,3 +1,5 @@
+@import "~assets/css/var.scss";
+@import "~assets/css/mixin.scss";
 
 .drawer{
   position: absolute;
@@ -13,5 +15,48 @@
   z-index: 100;
   &.open{
     transform: translate3d(0,0,0);
+  }
+  .loginNot{
+    padding:50px 0;
+    text-align: center;
+    p{
+      font-size:$font-size-large-s;
+      line-height: 1.6;
+    }
+  }
+  .login-btn{
+    width:400px;
+    margin:50px auto;
+  }
+}
+.userWrap{
+  .userTop{
+    padding:80px 30px 0;
+    .userHead{
+      display: flex;
+      img{
+        width:200px;
+        height:200px;
+        border-radius: 50%;
+      }
+    }
+    .user-flex{
+      display: flex;
+      flex-flow: row nowrap;
+      .user-name{
+        font-size:$font-size-medium;
+      }
+      .user-level{
+        height:40px;
+        font-size:$font-size-small;
+        padding:0 10px;
+        border-radius: 20px;
+        border:1px solid #000;
+      }
+      .user-sign{
+        flex:1;
+        text-align: right;
+      }
+    }
   }
 }

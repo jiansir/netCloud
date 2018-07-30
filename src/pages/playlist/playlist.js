@@ -41,6 +41,7 @@ class PlayList extends React.Component{
   render() {
     const { defaultName,loading}=this.state;
     const { name, coverImgUrl, avatarUrl, nickname, playCount, tracks}=this.state.playListData;
+    console.log(tracks);
     return (
       <div className="playlist mm-wrapper">
         <MmNav title={name} />

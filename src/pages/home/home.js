@@ -27,6 +27,9 @@ class Home extends React.Component{
       }
     })
   }
+  playerSlide=(id)=>{
+    
+  }
 
   render(){
     let settings = {
@@ -51,7 +54,7 @@ class Home extends React.Component{
                   return (
                     <div
                       className="slide-item"
-                      key={banner.targetId + index}>
+                      key={banner.targetId + index} onClick={banner.targetId == 1 ? () => { this.playerSlide(banner.targetId)}:null}>
                       <img src={banner.picUrl} alt="" />
                     </div>
                   )

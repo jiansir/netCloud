@@ -5,6 +5,13 @@
   .song-item{
     display: flex;
     padding-left:20px;
+    &.nocopy{
+      .song-info{
+        h2{
+          
+        }
+      }
+    }
      .song-num {
       width: 160px;
       height: 160px;

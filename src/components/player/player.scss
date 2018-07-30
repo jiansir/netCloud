@@ -5,11 +5,7 @@ input[type=range] {
     -webkit-appearance: none;
     border-radius: 10px; /*这个属性设置使填充进度条时的图形为圆角*/
 }
-// input[type=range]::-webkit-slider-runnable-track {
-//     height: 10px;
-//     border-radius: 10px; /*将轨道设为圆角的*/
-//     // box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; /*轨道内置阴影效果*/
-// }
+
 /*拖动块的样式*/
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;/*清除系统默认样式*/
@@ -104,6 +100,64 @@ input[type=range]::-webkit-slider-thumb {
       right: 0;
       left: 0;
       bottom: 360px;
+      overflow: hidden;
+      .lrc{
+        position: absolute;
+        width:100%;
+        overflow: hidden;
+        top:80px;
+        bottom:200px;
+        &-scroll{
+          position: relative;
+          top:0px;
+          transition:all 0.3s ease-out; 
+          .lrc-text{
+            height:80px;
+            line-height: 80px;
+            text-align: center;
+            font-size:$font-size-medium;
+            color:#999;
+            &.current{
+              color:#FFF;
+            }
+          }
+        }
+      }
+      &-cd{
+        position: relative;
+        width:100%;
+        height:100%;
+        overflow: hidden;
+        .music-handle{
+          position: absolute;
+          bottom:0;
+          left:0;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          color:#FFF;
+          .mh-item{
+            flex:0 0 15%;
+            height:60px;
+            @include bg-full;
+            &.like{
+              @include bg-url("~assets/img/player/nolike.png");
+              &.liked{
+                @include bg-url("~assets/img/player/like.png");
+              }
+            }
+            &.download{
+              @include bg-url("~assets/img/player/download.png")
+            }
+            &.comment{
+              @include bg-url("~assets/img/player/comment.png")
+            }
+            &.setting{
+              @include bg-url("~assets/img/player/setting.png")
+            }
+          }
+        }
+      }
     }
     .footer {
       position: absolute;

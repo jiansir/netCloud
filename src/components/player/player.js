@@ -2,11 +2,14 @@ import React from 'react'
 import ReactDom from 'react-dom';
 import {connect} from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
+import classNames from 'classname';
 import { setCurrentIndex, setCurrentMusic} from 'store/actions';
 import { formatTime} from 'common/util';
 import Cd from './cd/cd';
 import MusicList from './musicList/musicList';
 import Mask from 'base/mask/mask';
+import { getMusicLrc } from 'store/actions';
+import formatLyric from 'model/lyric';
 
 import './player.scss';
 
@@ -14,25 +17,47 @@ class Player extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      isFull:false,
+      isFull:true,
       isPlay:false,
       showMusicList:false,
       currentTime:0,
       currentAllTime:0,
       currentMusic:{},
+      isShowLrc:true,
+      currentLrcIndex:-1
     }
   }
   componentDidMount(){
+    console.log(this.props.currentMusic);
     this.audioEle=this.refs.myAudio;  
-    this.bindEvents()
+    this.bindEvents();
+    this.getLyric(this.props.currentMusic.id)
   }
   bindEvents(){
-    this.audioEle.addEventListener('end',this.playNext)
+    this.audioEle.addEventListener('ended',this.playNext)
+  }
+  componentWillReceiveProps(nextProps){
+    if (nextProps.currentMusic.id != this.props.currentMusic.id){
+      this.getLyric(nextProps.currentMusic.id)
+    }
   }
 
   //根据播放模式播放下一首
   playNext=()=>{
     this.nextMusic()
+  }
+  getLyric(id){
+    var that=this;
+    getMusicLrc(id).then(res=>{
+      if(res.data.code==200){
+        that.setState({
+          lyrics: formatLyric(res.data.lrc.lyric)
+        })
+      }
+    })
+    .catch(error=>{
+      console.log(error);
+    })
   }
 
   controlAudio(type,value,event){
@@ -63,6 +88,7 @@ class Player extends React.Component{
         this.setState({
           currentTime: myAudio.currentTime
         })
+        this.changeLrcTop();
         this.getPrecent()
         break;
       case 'changeTime':
@@ -88,7 +114,7 @@ class Player extends React.Component{
     this.props.onSetCurrentIndex(index)
     this.props.onSetCurrentMusic(this.props.playList[index])
   }
-  nextMusic(){
+  nextMusic=()=>{
     var index = this.props.currentIndex + 1;
     if (index > this.props.playList.length) {
       index = 0
@@ -106,8 +132,28 @@ class Player extends React.Component{
       this.props.onSetCurrentMusic(this.props.playList[index])
     }
   }
+  togglePanel=()=>{
+    this.setState((prevState)=>{
+      return {
+        isShowLrc: !prevState.isShowLrc
+      }
+    })
+  }
+  changeLrcTop=()=>{
+    var { currentTime, lyrics} = this.state;
+    var currentLrcIndex=0;
+    for (let i = 0; i < lyrics.length; i++) {
+      if (currentTime>lyrics[i][0]-1){
+        currentLrcIndex=i
+      }
+    }
+    this.setState({
+      currentLrcIndex
+    })
+  }
+
   render(){
-    const {isPlay,isFull,showMusicList,currentTime,precent}=this.state;
+    const { isPlay, isFull, showMusicList, currentTime, precent, isShowLrc, lyrics, currentLrcIndex}=this.state;
     const { currentMusic, playList} =this.props;
     const precentCss={
       backgroundSize: `${precent+'%'} 100%`
@@ -130,8 +176,21 @@ class Player extends React.Component{
               <h2>{currentMusic.singer}</h2>
             </div>
             <div className="middle">
-              <Cd isPlay={isPlay} image={currentMusic.image} />
+              
+              {isShowLrc ? lyrics && <MusicLrc lyrics={lyrics} currentTime={currentTime} currentLrcIndex={currentLrcIndex} onToggle={this.togglePanel}/>:
+                <div className="middle-cd">
+                  <Cd isPlay={isPlay} image={currentMusic.image} onToggle={this.togglePanel} />
+                  <div className="music-handle">
+                      <div className="mh-item like"></div>
+                      <div className="mh-item download"></div>
+                      <div className="mh-item comment"></div>
+                      <div className="mh-item setting"></div>
+                  </div>
+                </div>
+                
+              }
             </div>
+            
             <div className="footer">
               <div className="progress-wrapper">
                 <span className="progress-time progress-time-l">{formatTime(currentTime)}</span>
@@ -163,12 +222,28 @@ class Player extends React.Component{
           <div className="player-min-list" onClick={(e)=>this.toggleList(e)}></div>
         </div>
         <audio ref="myAudio" src={`https://music.163.com/song/media/outer/url?id=${currentMusic.id}.mp3`} preload='true' onCanPlay={() => this.controlAudio('startPlay')} onTimeUpdate={(e)=>this.controlAudio('getCurrentTime')}></audio>
-        {showMusicList && <MusicList list={playList} music={currentMusic} show={showMusicList} onSelectItem={this.selectMusic} />}
+        <MusicList list={playList} music={currentMusic} show={showMusicList} onSelectItem={this.selectMusic} />
         {showMusicList && <Mask show={showMusicList} onMaskClick={this.toggleList} />}
         
       </div>
     )
   }
+}
+const MusicLrc=(props)=>{
+  const { currentTime, lyrics, currentLrcIndex, onToggle}=props;
+  return (
+    <div className="lrc" onClick={onToggle}>
+        <div className="lrc-scroll" style={{top:(100-(currentLrcIndex)*28)+'px'}}>
+          {
+            lyrics.map((item, index) => (
+              <div className={classNames("lrc-text", { current: currentLrcIndex == index })} key={index}>
+                {item[1]}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+  )
 }
 
 const mapStateToProps=state=>{

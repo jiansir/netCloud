@@ -1,12 +1,13 @@
 
 export class Song{
-  constructor({ id, name, singer, album, image, duration }) {
+  constructor({ id, name, singer, album, image, duration, copyright }) {
     this.id = id; //歌曲ID
     this.name = name; //歌曲名称
     this.singer = singer; //歌手
     this.album = album; //专辑
     this.image = image; //封面图
     this.duration = duration; //时长
+    this.copyright=copyright;
   }
 }
 function filterSinger(singers){
@@ -25,10 +26,12 @@ export function createSongs(music){
     album: music.album.name,
     image: music.album.picUrl || null,
     duration: music.duration / 1000,
+    copyright: music.copyright
   })
 }
 
 const formatSongs=function(list){
+  console.log(list);
   let Songs=[];
   list.forEach(item => {
     if(item.id){

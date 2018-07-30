@@ -30,32 +30,3 @@ export default function setPlayReducer(state = fromJS(initialState).toJS(), acti
       return state;
   }
 }
-
-// export function currentIndex(currentIndex = initialState.currentIndex, action) {
-//   switch (action.type) {
-//     case ActionTypes.SET_CURRENT_INDEX:
-//       return { currentIndex: action.payload}
-//     default:
-//       return currentIndex;
-//   }
-// }
-
-// export function currentMusic(currentMusic = initialState.currentMusic, action) {
-//   switch (action.type) {
-//     case ActionTypes.SET_CURRENT_MUSIC:
-//       return { currentMusic: action.payload}
-//     default:
-//       return currentMusic;
-//   }
-// }
-
-// export function setShowPlayer(showPlayer = initialState.showPlayer, action) {
-//   console.log(action);
-//   switch (action.type) {
-//     case ActionTypes.SET_SHOW_PLAYER:
-//       return { showPlayer: action.payload}
-//     default:
-//       return showPlayer;
-//   }
-// }
-

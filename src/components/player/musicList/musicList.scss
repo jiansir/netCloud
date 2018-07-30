@@ -11,6 +11,11 @@
   overflow: hidden;
   background:#182828;
   z-index:999;
+  transform: translate3d(0,100%,0);
+  transition: all .3s ease-out;
+  &.active{
+    transform: translate3d(0, 0, 0);
+  }
   &-header{
     display: flex;
     height:150px;

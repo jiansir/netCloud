@@ -5,7 +5,10 @@ import {
   getBannerApi, 
   getPersonalizedApi, 
   getPlaylistDetailApi,
-  loginApi
+  loginApi,
+  getUserDetailApi,
+  getUserSongListApi,
+  getMusicLrcApi
 } from '../api';
 
 export function getBanner(data,dispatch){
@@ -13,7 +16,6 @@ export function getBanner(data,dispatch){
     url: getBannerApi,
     data
   }).then(function(res){
-    console.log(res)
     if (res.status==200){
       return dispatch({
         type: ActionTypes.GET_BANNER,
@@ -44,6 +46,24 @@ export function getPlaylistDetail(id){
     }
   })
 }
+export function getUserDetail(uid){
+  let url = getUserDetailApi;
+  return axios.get(url,{
+    params: {
+      uid
+    }
+  })
+}
+export function getMusicLrc(id){
+  let url = getMusicLrcApi;
+  return axios.get(url,{
+    params:{
+      id
+    }
+  })
+}
+
+
 export function setShowPlayer(showPlayer){
   return { type: ActionTypes.SET_SHOW_PLAYER,payload:showPlayer}
 }
@@ -63,12 +83,10 @@ export const setMusicAll=({playlist,currentIndex})=>dispatch=>{
   dispatch(setCurrentMusic(playlist[currentIndex]))
 }
 export const login = (data,dispatch)=>{
-  console.log(data);
   request({
     url: loginApi,
     data
   }).then((res)=>{
-    console.log(res);
     if (res.status == 200) {
       if(res.data.code==200){
         return dispatch({
@@ -90,5 +108,27 @@ export const login = (data,dispatch)=>{
       type:ActionTypes.LOGIN,
       payload:{code:-1,data:'请求异常'}
     })
+  })
+}
+
+export const getUserSongList=(data,dispatch)=>{
+  request({
+    url: getUserSongListApi,
+    data
+  }).then(res=>{
+    if (res.status == 200) {
+      if (res.data.code == 200) {
+        return dispatch({
+          type: ActionTypes.GET_USER_SONGLIST,
+          payload: { code: res.data.code, data: res.data.playlist }
+        })
+      }
+      return dispatch({
+        type: ActionTypes.GET_USER_SONGLIST,
+        payload: { code: res.data.code, data: '请求失败' }
+      })
+    }
+  },error=>{
+    console.log(error);
   })
 }

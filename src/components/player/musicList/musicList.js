@@ -7,10 +7,9 @@ import './musicList.scss';
 
 const MusicList=(props)=>{
   const { list, show, music, onSelectItem}=props;
-  console.log(list.length);
   return(
-    show&&
-      <div className="musiclist">
+    
+    <div className={classNames("musiclist",{active:show})}>
         <div className="musiclist-header">
           当前歌曲数（{list.length}）
         </div>
@@ -31,9 +30,9 @@ const MusicList=(props)=>{
   )
 }
 MusicList.propTypes = {
-  list: PropTypes.object.isRequired,
-  music:PropTypes.object.isRequiresd,
-  onItemClick: PropTypes.func.isRequired,
+  list: PropTypes.array.isRequired,
+  music: PropTypes.object.isRequired,
+  onSelectItem: PropTypes.func.isRequired,
 
 }
 
